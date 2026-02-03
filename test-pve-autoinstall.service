@@ -1,0 +1,14 @@
+[Unit]
+Description=Proxmox post-install autoconfig (TEST, small LXC)
+Wants=network-online.target pve-cluster.service
+After=network-online.target pve-cluster.service
+ConditionPathExists=/usr/local/sbin/test-pve-autoinstall.sh
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/test-pve-autoinstall.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+
