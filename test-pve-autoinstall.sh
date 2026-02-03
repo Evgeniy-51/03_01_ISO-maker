@@ -20,6 +20,11 @@ fi
 
 log "Starting Proxmox autoinstall TEST..."
 
+# --- Тестовый файл в /mnt (только в тестовом скрипте) ---
+mkdir -p /mnt
+echo "test-pve-autoinstall $(date -Is)" > /mnt/test.txt
+log "Wrote /mnt/test.txt"
+
 # --- Wait services ---
 log "Waiting for pve-cluster..."
 for i in {1..60}; do
