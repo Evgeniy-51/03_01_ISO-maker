@@ -25,9 +25,7 @@ log "Waiting for pve-cluster..."
 for i in {1..60}; do
   if systemctl is-active --quiet pve-cluster; then break; fi
   sleep 2
-else
-  :
-fi
+done
 systemctl is-active --quiet pve-cluster || { log "ERROR: pve-cluster not ready"; exit 1; }
 log "pve-cluster ready."
 
