@@ -1,0 +1,13 @@
+[Unit]
+Description=Proxmox post-install autoconfig (lab bridges + LXC)
+Wants=network-online.target pve-cluster.service
+After=network-online.target pve-cluster.service
+ConditionPathExists=/usr/local/sbin/pve-autoinstall.sh
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/pve-autoinstall.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
