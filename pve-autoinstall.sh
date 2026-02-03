@@ -204,7 +204,20 @@ disable_ha_services_if_single_node() {
   systemctl disable -q --now corosync   2>/dev/null || true
 }
 
+wait_for_apt() {
+  local max_wait=300
+  local waited=0
+  while fuser /var/lib/dpkg/lock-frontend /var/lib/dpkg/lock /var/lib/apt/lists/lock >/dev/null 2>&1; do
+    [[ $waited -ge $max_wait ]] && { log "ERROR: apt lock timeout"; return 1; }
+    log "Waiting for apt lock to be released..."
+    sleep 10
+    (( waited += 10 )) || true
+  done
+  return 0
+}
+
 do_updates() {
+  wait_for_apt || return 1
   log "Running apt update..."
   DEBIAN_FRONTEND=noninteractive apt-get update -y
   if [[ "$DO_DIST_UPGRADE" -eq 1 ]]; then
